@@ -1,67 +1,67 @@
-import React from 'react'
-import { useState } from 'react';
-import { Document, Page,pdfjs } from 'react-pdf';
+import React, { useState } from 'react'
 
-const url ="./pdf/charlaImpresion3D.pdf"
+import { Document, Page, pdfjs } from 'react-pdf'
 
-function Presentation() {
-    pdfjs.GlobalWorkerOptions.workerSrc =`//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+const url = './pdf/charlaImpresion3D.pdf'
 
-  const [numPages, setNumPages] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+function Presentation () {
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
-  /*To Prevent right click on screen*/
-  document.addEventListener("contextmenu", (event) => {
+  const [numPages, setNumPages] = useState(0)
+  const [pageNumber, setPageNumber] = useState(1)
+
+  /* To Prevent right click on screen */
+  document.addEventListener('contextmenu', (event) => {
     event.preventDefault()
-  });
-  /*When document gets loaded successfully*/
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-    setPageNumber(1);
+  })
+  /* When document gets loaded successfully */
+  function onDocumentLoadSuccess ({ numPages }) {
+    setNumPages(numPages)
+    setPageNumber(1)
   }
-  function changePage(offset) {
-    setPageNumber(prevPageNumber => prevPageNumber + offset);
+  function changePage (offset) {
+    setPageNumber(prevPageNumber => prevPageNumber + offset)
   }
-  function previousPage() {
-    changePage(-1);
+  function previousPage () {
+    changePage(-1)
   }
-  function nextPage() {
+  function nextPage () {
     changePage(1)
   }
   return (
     <>
-    <div className="main">
-      <Document
-        file={url}
-        onLoadSuccess={onDocumentLoadSuccess}
-      >
-        <Page pageNumber={pageNumber} />
-      </Document>
-      <div>
-        <div className="pagec">
-          Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
-        </div>
-        <div className="buttonc">
-        <button
-          type="button"
-          disabled={pageNumber <= 1}
-          onClick={previousPage}
-          className="Pre"
+      <div className='main'>
+        <Document
+          file={url}
+          onLoadSuccess={onDocumentLoadSuccess}
         >
-          Previous
-        </button>
-        <button
-          type="button"
-          disabled={pageNumber >= numPages}
-          onClick={nextPage}
-        >
-          Next
-        </button>
+          <Page pageNumber={pageNumber} />
+        </Document>
+        <div>
+          <div className='pagec'>
+            Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+          </div>
+          <div className='buttonc'>
+            <button
+              type='button'
+              disabled={pageNumber <= 1}
+              onClick={previousPage}
+              className='Pre'
+            >
+              Previous
+            </button>
+            <button
+              type='button'
+              disabled={pageNumber >= numPages}
+              onClick={nextPage}
+            >
+              Next
+            </button>
+          </div>
         </div>
-      </div>
       </div>
     </>
-  );
+  )
 }
 
 export default Presentation
