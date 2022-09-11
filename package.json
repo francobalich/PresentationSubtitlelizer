@@ -12,6 +12,7 @@
     "microsoft-cognitiveservices-speech-sdk": "^1.18.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-pdf": "^5.7.2",
     "react-scripts": "^5.0.1",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^0.2.4"
@@ -57,9 +58,5 @@
     "url": "git+https://github.com/francobalich/PresentationSubtitlelizer.git"
   },
   "author": "Franco Adrian Balich",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/francobalich/PresentationSubtitlelizer/issues"
-  },
-  "homepage": "https://github.com/francobalich/PresentationSubtitlelizer#readme"
+  "license": "ISC"
 }
