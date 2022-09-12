@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import './App.css'
 import { Document, Page, pdfjs } from 'react-pdf'
 
 const url = './pdf/charlaImpresion3D.pdf'
@@ -10,7 +10,6 @@ function Presentation () {
   const [numPages, setNumPages] = useState(0)
   const [pageNumber, setPageNumber] = useState(1)
 
-  /* To Prevent right click on screen */
   document.addEventListener('contextmenu', (event) => {
     event.preventDefault()
   })
@@ -32,6 +31,7 @@ function Presentation () {
     <>
       <div className='main'>
         <Document
+          className='pdfContainer'
           file={url}
           onLoadSuccess={onDocumentLoadSuccess}
         >

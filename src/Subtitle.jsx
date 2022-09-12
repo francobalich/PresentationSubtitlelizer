@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { getTokenOrRefresh } from './token_util'
 import { ResultReason, CancellationReason } from 'microsoft-cognitiveservices-speech-sdk'
-
+import './App.css'
 const speechsdk = require('microsoft-cognitiveservices-speech-sdk')
 
 export default function App () {
@@ -17,18 +17,18 @@ export default function App () {
     }
   }
   componentDidMount()
-  async function sttFromMic () {
+  async function sttFromMic (state) {
     const tokenObj = await getTokenOrRefresh()
     const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(tokenObj.authToken, tokenObj.region)
     speechConfig.speechRecognitionLanguage = 'es-ES'
 
     const audioConfig = speechsdk.AudioConfig.fromDefaultMicrophoneInput()
     const recognizer = new speechsdk.SpeechRecognizer(speechConfig, audioConfig)
+    let displayText
 
     setState({
       displayText: 'speak into your microphone...'
     })
-    let displayText
     recognizer.recognizing = (s, e) => {
       displayText = `RECOGNIZING: Text=${e.result.text}`
       setState({
@@ -67,14 +67,13 @@ export default function App () {
     recognizer.startContinuousRecognitionAsync()
   }
   return (
-    <div className='app-container'>
-      <div className='row main-container'>
-        <div className='col-6'>
-          <i className='fas fa-microphone fa-lg mr-2' onClick={() => sttFromMic()} />
-          Convert speech to text from your mic.
-        </div>
-        <div className='col-6 output-display rounded'>
-          <code>{state.displayText}</code>
+    <div className=''>
+      <div className=''>
+        <button className='button startButton' onClick={() => sttFromMic(true)}>Start</button>
+        <div className='subtitleSpace'>
+          <div className='subtitleContainer '>
+            <p className='subtitleText'>{state.displayText}</p>
+          </div>
         </div>
       </div>
     </div>

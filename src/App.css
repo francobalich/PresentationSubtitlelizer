@@ -1,9 +1,47 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-iframe{
+
+.pdfContainer{
+    background-color: transparent;
     width: 100%;
-    height: 100vh;
+}
+.subtitleSpace{
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 25px;
+}
+.subtitleContainer{
+    background-color: black;
+    color: white;
+    font-size: 25px;
+    width: 80%;
+    border: 1px solid white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    z-index: 10;
+}
+.subtitleText{
+    margin: 0;
+}
+.button{
+  color: white;
+  background-color: black;
+  border: 1px solid white;
+  padding: 7px 25px;
+  border-radius: 15px;
+  z-index: 1000;
+}
+.button:hover{
+  background-color: #333;
+}
+.startButton{
+    position: absolute;
+    z-index: 1000;
+    bottom: 25px;
+    left: 25px;
 }
