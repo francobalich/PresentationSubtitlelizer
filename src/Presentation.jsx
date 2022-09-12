@@ -1,64 +1,27 @@
-import React, { useState } from 'react'
 import './App.css'
-import { Document, Page, pdfjs } from 'react-pdf'
-
-const url = './pdf/charlaImpresion3D.pdf'
 
 function Presentation () {
-  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
-
-  const [numPages, setNumPages] = useState(0)
-  const [pageNumber, setPageNumber] = useState(1)
-
   document.addEventListener('contextmenu', (event) => {
     event.preventDefault()
   })
-  /* When document gets loaded successfully */
-  function onDocumentLoadSuccess ({ numPages }) {
-    setNumPages(numPages)
-    setPageNumber(1)
-  }
-  function changePage (offset) {
-    setPageNumber(prevPageNumber => prevPageNumber + offset)
-  }
-  function previousPage () {
-    changePage(-1)
-  }
-  function nextPage () {
-    changePage(1)
-  }
   return (
     <>
       <div className='main'>
-        <Document
-          className='pdfContainer'
-          file={url}
-          onLoadSuccess={onDocumentLoadSuccess}
+        <iframe
+          src='https://uaieduar-my.sharepoint.com/personal/francoadrian_balich_uai_edu_ar/_layouts/15/Doc.aspx?sourcedoc={3d75a38a-7a36-4040-8e84-77f72fe12e2d}&amp;action=embedview&amp;wdAr=1.7777777777777777'
+          width='100%'
+          height='100%'
+          frameborder='0'
         >
-          <Page pageNumber={pageNumber} />
-        </Document>
-        <div>
-          <div className='pagec'>
-            Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
-          </div>
-          <div className='buttonc'>
-            <button
-              type='button'
-              disabled={pageNumber <= 1}
-              onClick={previousPage}
-              className='Pre'
-            >
-              Previous
-            </button>
-            <button
-              type='button'
-              disabled={pageNumber >= numPages}
-              onClick={nextPage}
-            >
-              Next
-            </button>
-          </div>
-        </div>
+          Esto es un documento de
+          <a target='_blank' href='https://office.com' rel='noreferrer'>
+            Microsoft Office
+          </a> incrustado con tecnología de
+          <a target='_blank' href='https://office.com/webapps' rel='noreferrer'>
+            Office
+          </a>.
+        </iframe>
+
       </div>
     </>
   )

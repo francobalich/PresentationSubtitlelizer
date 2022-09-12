@@ -5,7 +5,8 @@ import './App.css'
 const speechsdk = require('microsoft-cognitiveservices-speech-sdk')
 
 export default function App () {
-  const [state, setState] = useState({ displayText: 'INITIALIZED: ready to test speech...' })
+  const [state, setState] = useState({ displayText: 'Inicializado: Esperando a que hable...' })
+  const [speech, setSpeech] = useState(false)
 
   async function componentDidMount () {
     // check for valid speech key/region
@@ -21,25 +22,36 @@ export default function App () {
     const tokenObj = await getTokenOrRefresh()
     const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(tokenObj.authToken, tokenObj.region)
     speechConfig.speechRecognitionLanguage = 'es-ES'
-
+    speechConfig.enableDictation()
     const audioConfig = speechsdk.AudioConfig.fromDefaultMicrophoneInput()
     const recognizer = new speechsdk.SpeechRecognizer(speechConfig, audioConfig)
     let displayText
-
+    const generarMensaje = (msg) => { /*
+      const maxPalabras = 15
+      const mensaje = msg.split(' ')
+      if (mensaje.length >= maxPalabras) {
+        mensaje = mensaje[0]
+        msg = ''
+        mensaje.forEach(texto => {
+          msg = msg + ' ' + texto
+        })
+      } */
+      return msg
+    }
     setState({
-      displayText: 'speak into your microphone...'
+      displayText: 'Hable por el microfono...'
     })
     recognizer.recognizing = (s, e) => {
-      displayText = `RECOGNIZING: Text=${e.result.text}`
+      displayText = generarMensaje(e.result.text)
       setState({
         displayText
       })
     }
     recognizer.recognized = (s, e) => {
       if (e.result.reason === ResultReason.RecognizedSpeech) {
-        displayText = `RECOGNIZED: Text=${e.result.text}`
+        displayText = generarMensaje(e.result.text)
       } else if (e.result.reason === ResultReason.NoMatch) {
-        displayText = 'NOMATCH: Speech could not be recognized.'
+        displayText = 'No se pudo reconocer nada.'
       }
       setState({
         displayText
@@ -48,28 +60,31 @@ export default function App () {
     recognizer.canceled = (s, e) => {
       console.log(`CANCELED: Reason=${e.reason}`)
       if (e.reason === CancellationReason.Error) {
-        displayText = `"CANCELED: ErrorCode=${e.errorCode}`
-        displayText = `"CANCELED: ErrorDetails=${e.errorDetails}`
-        displayText = 'CANCELED: Did you set the speech resource key and region values?'
+        displayText = `"Código del error=${e.errorCode}`
+        displayText = `"Detalles del error=${e.errorDetails}`
+        displayText = '¿Seteaste los valores de las keys?'
       }
       recognizer.stopContinuousRecognitionAsync()
+      setSpeech(false)
       setState({
         displayText
       })
     }
     recognizer.sessionStopped = (s, e) => {
-      displayText = '\n    Session stopped event.'
+      displayText = '\n    Se paro la sesión'
       recognizer.stopContinuousRecognitionAsync()
+      setSpeech(false)
       setState({
         displayText
       })
     }
     recognizer.startContinuousRecognitionAsync()
+    setSpeech(true)
   }
   return (
     <div className=''>
       <div className=''>
-        <button className='button startButton' onClick={() => sttFromMic(true)}>Start</button>
+        <button className={'button startButton ' + ((speech) ? 'green' : 'red')} onClick={() => sttFromMic(true)}>Iniciar</button>
         <div className='subtitleSpace'>
           <div className='subtitleContainer '>
             <p className='subtitleText'>{state.displayText}</p>
